@@ -1,0 +1,34 @@
+<html>
+<head>
+<style>
+body {
+    font-family: 'Helvetica Neue', Helvetica, sans-serif;
+}
+
+div.standard {
+    float: left;
+    margin: 2px;
+    padding: 5px;
+    background: #eee;
+    font-size: 10px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+}
+div.grade {
+    clear: left;
+    padding: 10px;
+}
+</style>
+</head>
+<body>
+<h1>Mathematics Standards</h1>
+<div>Hover over a standard to see what it depends on (green) and what depends on it (red). The colors
+fade as the dependency chain to the standard becomes longer.
+The dependencies are derived from a
+<a href="https://docs.google.com/spreadsheet/ccc?key=0AtYMTchBa3Y2dEpIUHpudlRfbWs0eGY1TTJ1ZE01UXc#gid=0">shared spreadsheet</a>,
+referenced from a <a href="http://dl.dropbox.com/u/11459286/ccssmgraph.pdf">document</a> by Jason Zimba.
+</div>
+
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="dependencies.js"></script>
+</body>
