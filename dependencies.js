@@ -1,4 +1,5 @@
 d3.csv("GraphData-EdgesOnly-Grade-00-08-2011-06-01-cleaned - EdgeSet.csv", function(data) {
+d3.json("standards.json", function(standards) {
     var grades = [];
     for (var g = 0; g <= 8; ++g) {
         grades.push([]);
@@ -8,9 +9,26 @@ d3.csv("GraphData-EdgesOnly-Grade-00-08-2011-06-01-cleaned - EdgeSet.csv", funct
     var nodes = [];
     var links = [];
 
+    var recodedStandards = {};
+    for (var code in standards) {
+        // First take out the letter if we can
+        var parts = code.split(".");
+        var reducedCode = code;
+        if (parts.length >= 4) {
+            reducedCode = parts[0] + "." + parts[1] + "." + parts[3];
+            if (parts.length >= 5) {
+                reducedCode += ("." + parts[4]);
+            }
+        }
+        reducedCode = reducedCode.replace("K", "0");
+        recodedStandards[reducedCode] = standards[code];
+    }
+
     function ensureNode(name) {
         if (nodeMap[name] === undefined) {
-            nodes.push({name: name});
+            var baseName = name.split("||")[0].split(",")[0].split(";")[0];
+            var description = recodedStandards[baseName];
+            nodes.push({name: name, description: description});
             var grade = +name.split(".")[0];
             grades[grade].push(nodes[nodes.length - 1]);
             nodeMap[name] = nodes[nodes.length - 1];
@@ -26,9 +44,10 @@ d3.csv("GraphData-EdgesOnly-Grade-00-08-2011-06-01-cleaned - EdgeSet.csv", funct
             links.push({source: nodeMap[d.End], target: nodeMap[d.Begin], type: d.EdgeDesc});
         }
     }
-    console.log(nodes);
-    console.log(links);
-    console.log(grades);
+
+    for (var grade = 0; grade <= 8; ++grade) {
+        grades[grade].sort(function(a, b) { return d3.ascending(a.name, b.name); });
+    }
 
     var fillScale = d3.scale.linear().domain([-50, -10, -1, 0, 1, 10, 50]).range(
     [
@@ -77,19 +96,24 @@ d3.csv("GraphData-EdgesOnly-Grade-00-08-2011-06-01-cleaned - EdgeSet.csv", funct
         });
     }
 
-    function buildGrade(grade) {
+    function buildGrade(grade, i) {
+        d3.select(this).append("div")
+            .attr("class", "grade-name")
+            .text(function(d) { return i === 0 ? "K" : i; });
+
         d3.select(this).selectAll("div.standard")
-        .data(grade)
-        .enter().append("div")
-        .attr("class", "standard")
-        .text(function(d) { return d.name; })
-        .on("mouseover", function(d) { highlightConnected(d.name); });
-        //.on("mouseout", function(d) { d3.select(this).attr("class", "standard"); });
+            .data(grade)
+            .enter().append("div")
+            .attr("class", "standard")
+            .attr("title", function(d) { return d.description; })
+            .text(function(d) { return d.name; })
+            .on("mouseover", function(d) { highlightConnected(d.name); });
     }
 
     d3.select("body").selectAll("div.grade")
-    .data(grades)
-    .enter().append("div")
-    .attr("class", "grade")
-    .each(buildGrade);
+        .data(grades)
+        .enter().append("div")
+        .attr("class", "grade")
+        .each(buildGrade);
+});
 });
