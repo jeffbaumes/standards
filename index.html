@@ -56,12 +56,32 @@ div.grade {
 </head>
 <body>
 <div class="container">
-    <h1><a href="/" onclick="go(event, 'home');">Common Core Mathematics Standards</a></h1>
+    <div class="navbar">
+        <div class="navbar-inner">
+            <a class="brand" href="/#">Common Core Mathematics Standards Viewer</a>
+            <ul class="nav">
+                <li id="flow-navitem" class="active"><a href="/#">Flow</a></li>
+                <li id="matrix-navitem"><a href="/#grouped">Matrix</a></li>
+            </ul>
+        </div>
+    </div>
     <div id="home" style="display:none">
+        <h1>Flow View</h1>
         <div>
-            Hover over a standard to see what it depends on (green) and what depends on it (red). The colors
+            Hover over a standard to see what it depends on (blue) and what depends on it (red). The colors
             fade as the dependency chain to the standard becomes longer. Click on a standard for more detail on
-            the standard and its pre- and post-requisites.
+            the standard and its prerequisites and dependent standards.
+            The dependencies are derived from a <a href="https://docs.google.com/spreadsheet/ccc?key=0AtYMTchBa3Y2dEpIUHpudlRfbWs0eGY1TTJ1ZE01UXc#gid=0">shared spreadsheet</a>,
+            referenced from a <a href="http://dl.dropbox.com/u/11459286/ccssmgraph.pdf">document</a> by Jason Zimba.
+        </div>
+    </div>
+
+    <div id="grouped" style="display:none">
+        <h1>Matrix View</h1>
+        <div>
+            Hover over a standard to see what it depends on (blue) and what depends on it (red). The colors
+            fade as the dependency chain to the standard becomes longer. Click on a standard for more detail on
+            the standard and its prerequisites and dependent standards.
             The dependencies are derived from a <a href="https://docs.google.com/spreadsheet/ccc?key=0AtYMTchBa3Y2dEpIUHpudlRfbWs0eGY1TTJ1ZE01UXc#gid=0">shared spreadsheet</a>,
             referenced from a <a href="http://dl.dropbox.com/u/11459286/ccssmgraph.pdf">document</a> by Jason Zimba.
         </div>
